@@ -12,11 +12,11 @@ if isinstance(fetch, dict):
 os.makedirs("outputs", exist_ok=True)
 out_path = os.path.join("outputs", "leads.md")
 with open(out_path, "w", encoding="utf-8") as f:
-    f.write("# Zoho Leads\\n\\n")
+    f.write("# Zoho Leads\n\n")
     for r in records:
         if not isinstance(r, dict):
             continue
         name = r.get("Full_Name") or r.get("Last_Name") or "Unknown"
-        f.write(f"- {name}\\n")
+        f.write(f"- {name}\n")
 
 json.dump({"status": "success", "files": [out_path]}, sys.stdout)
