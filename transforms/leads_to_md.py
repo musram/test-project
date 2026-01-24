@@ -7,7 +7,14 @@ fetch = context.get("fetch_leads") or {}
 # This depends on the Zoho executor response shape; adapt as needed.
 records = []
 if isinstance(fetch, dict):
-    records = (fetch.get("data") or fetch.get("Data") or []) or []
+    # In this stack, connector steps usually store their HTTP response under `result`.
+    # Example: context.fetch_leads.result.data = [...]
+    result = fetch.get("result")
+    if isinstance(result, dict):
+        records = (result.get("data") or result.get("Data") or []) or []
+    else:
+        # Fallback for older / alternate shapes: context.fetch_leads.data = [...]
+        records = (fetch.get("data") or fetch.get("Data") or []) or []
 
 os.makedirs("outputs", exist_ok=True)
 out_path = os.path.join("outputs", "leads.md")
